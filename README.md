@@ -9,7 +9,7 @@ MixSwap 是 Exin 旗下的 MiFi DEX 聚合交易平台，它同时接入多个�
 
 每个字段用 `|` 隔开，并以 BASE64 编码：
 
-ACTION|FIELD1|FIELD2|FIELD3
+`ACTION|FIELD1|FIELD2|FIELD3`
 
 | 行为 | ACTION | FIELD1 | FIELD2 | FIELD3 |
 | ---- | ---- | ---- | ----| ---- |
@@ -43,6 +43,7 @@ RESULT|TRACE|SOURCE|TYPE
 
 
 ## API
+
 版本 V1
 
 EndPoint: https://mixswap.exchange/api/v1
@@ -64,7 +65,7 @@ EndPoint: https://mixswap.exchange/api/v1
 
 
 响应：
-```
+```json
 {
     "code": 0,
     "success": true,
@@ -183,7 +184,7 @@ EndPoint: https://mixswap.exchange/api/v1
   用户发起交易转账时的 Trace ID
 
 响应：
-```
+```json
 {
     "code": 0,
     "success": true,
@@ -252,7 +253,7 @@ EndPoint: https://mixswap.exchange/api/v1
 请求参数： 无
 
 响应：
-```
+```json
 {
     "data": [
         {
@@ -284,7 +285,7 @@ EndPoint: https://mixswap.exchange/api/v1
 请求参数： 无
 
 响应：
-```
+```json
 {
     "data": [
         {
