@@ -15,7 +15,7 @@ ACTION|FIELD1|FIELD2|FIELD3
 | ---- | ---- | ---- | ----| ---- |
 | 聚合交易 | 0 | 目标资产UUID | Route ID。可选。 | 最少获取数量。可选。 |
 
-其中 ：
+其中：
 * Route ID 是一个代表这笔交易的路线分布的字符串，可以通过接口获取。
   
   不填或者填0的话，MixSwap 会在收到转账后自动计算当前最优交易分布。
@@ -26,9 +26,9 @@ ACTION|FIELD1|FIELD2|FIELD3
 
   不填的话会按照千分之二的最大滑点持续成交直至将支付的币全部交易完；
 
+* **初次接入时，建议小额测试。**
 
-**初次接入时，建议小额测试。**
-**目前对于不符合规范（不能正确解码、未用`|`分隔、ACTION 不正确等）的转账不会自动退币。**
+  **目前对于不符合规范（不能正确解码、未用`|`分隔、ACTION 不正确等）的转账不会自动退币。**
 
 
 ### 服务器转账 Memo 规范
@@ -49,6 +49,7 @@ EndPoint: https://mixswap.exchange/api/v1
 
 ### 计算交易路线分布
 **/trade/routes**
+
 请求参数：
 * payAssetUuid `string`
 
@@ -175,6 +176,7 @@ EndPoint: https://mixswap.exchange/api/v1
 
 ### 查询订单详情
 **/order/{TRACE_ID}**
+
 请求参数： 
 * TRACE_ID (Path)
 
@@ -246,6 +248,7 @@ EndPoint: https://mixswap.exchange/api/v1
 
 ### 获取支持的资产列表
 **/assets**
+
 请求参数： 无
 
 响应：
@@ -277,6 +280,7 @@ EndPoint: https://mixswap.exchange/api/v1
 
 ### 获取支持的交易所
 **/exchanges**
+
 请求参数： 无
 
 响应：
