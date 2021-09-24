@@ -1,4 +1,4 @@
-# MixSwap development doc
+# MixSwap Development Documentation
 
 ##### [Switch to Chinese version](https://github.com/ExinOne/mixswap-doc/blob/master/README-zh.md)
 
