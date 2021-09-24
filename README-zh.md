@@ -1,5 +1,7 @@
 # MixSwap 开发文档
+
 ##### [切换到英文版本](https://github.com/ExinOne/mixswap-doc/blob/master/README.md)
+
 MixSwap 是 Exin 旗下的 MiFi DEX 聚合交易平台，它同时接入多个交易所的深度，目标是帮助用户兑换更多的币，省更多的钱。
 
 ## 交易
@@ -18,7 +20,7 @@ MixSwap 是 Exin 旗下的 MiFi DEX 聚合交易平台，它同时接入多个�
 
 其中：
 * Route ID 是一个代表这笔交易的路线分布的字符串，可以通过接口获取；
-  
+
   不填或者填0的话，MixSwap 会在收到转账后自动计算当前最优交易分布；
 
   有效期 15 分钟。收到转账时如果已经失效，会自动退币。

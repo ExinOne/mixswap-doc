@@ -1,11 +1,15 @@
-# Mixswap development doc 
+# MixSwap development doc
+
 ##### [Switch to Chinese version](https://github.com/ExinOne/mixswap-doc/blob/master/README-zh.md)
+
 MixSwap is the MiFi DEX aggregate trading platform under Exin. It is connected to the depth of multiple exchanges at the same time. The goal is to help users exchange more coins and save more money.
 
-## Transaction 
-To start a transaction, you will need to transfer the coins with specific Memo To Mixswap Bot (Mixin ID:7000103767 UserID:6a4a121d-9673-4a7e-a93e-cb9ca4bb83a2)
+## Transaction
+
+To start a transaction, you will need to transfer the coins with specific Memo To MixSwap Bot (Mixin ID:7000103767 UserID:6a4a121d-9673-4a7e-a93e-cb9ca4bb83a2)
 
 ### User transfer Memo specification
+
 Each field is separated by | , and encoded in BASE64:
 ACTION|FIELD1|FIELD2|FIELD3
 
@@ -14,7 +18,7 @@ ACTION|FIELD1|FIELD2|FIELD3
 | aggregate trading | 0 | Target asset UUID | Route ID (optional)| minimum receive amount(optional)|
 
 Among:
-* Route ID is a string representing the route distribution of this transaction, which can be obtained through the API ; 
+* Route ID is a string representing the route distribution of this transaction, which can be obtained through the API ;
 
   If you do not fill in or fill in 0, MixSwap will automatically calculate the current optimal transaction distribution after receiving the transfer;
 
@@ -32,12 +36,12 @@ Among:
 
 Examples of exchanging XIN with aggregate transaction:
 
-> I have already obtained RouteID `36841c0e-ebd2-41e8-b275-907e04b05419` through the API . I hope to get at least 1.2345 XINs:  
+> I have already obtained RouteID `36841c0e-ebd2-41e8-b275-907e04b05419` through the API . I hope to get at least 1.2345 XINs:
 
 Encode `0|c94ac88f-4671-3976-b60a-09064f1811e8|36841c0e-ebd2-41e8-b275-907e04b05419|1.2345` in BASE64:
 `MHxjOTRhYzg4Zi00NjcxLTM5NzYtYjYwYS0wOTA2NGYxODExZTh8MzY4NDFjMGUtZWJkMi00MWU4LWIyNzUtOTA3ZTA0YjA1NDE5fDEuMjM0NQ==`
 
-> Hope to continue trading until success:  
+> Hope to continue trading until success:
 
 Encode `0|c94ac88f-4671-3976-b60a-09064f1811e8` in BASE64:
 `MHxjOTRhYzg4Zi00NjcxLTM5NzYtYjYwYS0wOTA2NGYxODExZTg=`
@@ -192,7 +196,7 @@ Response ：
 ### Check order details
 **/order/{TRACE_ID}**
 
-Request parameters ： 
+Request parameters:
 * TRACE_ID (Path)
 
   Trace ID when the user initiates a transaction transfer
@@ -264,7 +268,7 @@ Response ：
 ### Get a list of supported assets
 **/assets**
 
-Request parameters : None 
+Request parameters: None
 
 Response ：
 ```json
@@ -295,7 +299,7 @@ Response ：
 ### Get supported exchanges
 **/exchanges**
 
-Request parameters : None 
+Request parameters: None
 
 Response ：
 ```json
