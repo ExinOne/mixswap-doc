@@ -1,5 +1,5 @@
 # Mixswap development doc 
-##### [Switch to Chinese version](https://github.com/who3m1/mixswap-doc/blob/master/README-zh.md)
+##### [Switch to Chinese version](https://github.com/ExinOne/mixswap-doc/blob/master/README-zh.md)
 MixSwap is the MiFi DEX aggregate trading platform under Exin. It is connected to the depth of multiple exchanges at the same time. The goal is to help users exchange more coins and save more money.
 
 ## Transaction 

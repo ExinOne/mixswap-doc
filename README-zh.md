@@ -1,5 +1,5 @@
 # MixSwap 开发文档
-##### [切换到英文版本](https://github.com/who3m1/mixswap-doc/blob/master/README.md)
+##### [切换到英文版本](https://github.com/ExinOne/mixswap-doc/blob/master/README.md)
 MixSwap 是 Exin 旗下的 MiFi DEX 聚合交易平台，它同时接入多个交易所的深度，目标是帮助用户兑换更多的币，省更多的钱。
 
 ## 交易
