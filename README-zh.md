@@ -1,84 +1,83 @@
-# Mixswap development doc 
-##### [Switch to Chinese version](https://github.com/who3m1/mixswap-doc/blob/master/README-zh.md)
-MixSwap is the MiFi DEX aggregate trading platform under Exin. It is connected to the depth of multiple exchanges at the same time. The goal is to help users exchange more coins and save more money.
+# MixSwap 开发文档
+##### [切换到英文版本](https://github.com/who3m1/mixswap-doc/blob/master/README.md)
+MixSwap 是 Exin 旗下的 MiFi DEX 聚合交易平台，它同时接入多个交易所的深度，目标是帮助用户兑换更多的币，省更多的钱。
 
-## Transaction 
-To start a transaction, you will need to transfer the coins with specific Memo To Mixswap Bot (Mixin ID:7000103767 UserID:6a4a121d-9673-4a7e-a93e-cb9ca4bb83a2)
+## 交易
 
-### User transfer Memo specification
-Each field is separated by | , and encoded in BASE64:
-ACTION|FIELD1|FIELD2|FIELD3
+要发起交易，需要将待交易的币以指定的 Memo 格式转账给 MixSwap 机器人 (Mixin ID: 7000103767 User ID: 6a4a121d-9673-4a7e-a93e-cb9ca4bb83a2)
 
-| ACTIONS | ACTION | FIELD1 | FIELD2 | FIELD3 |
+### 用户转账 Memo 规范
+
+每个字段用 `|` 隔开，并以 BASE64 编码：
+
+`ACTION|FIELD1|FIELD2|FIELD3`
+
+| 行为 | ACTION | FIELD1 | FIELD2 | FIELD3 |
 | ---- | ---- | ---- | ----| ---- |
-| aggregate trading | 0 | Target asset UUID | Route ID (optional)| minimum receive amount(optional)|
+| 聚合交易 | 0 | 目标资产UUID | Route ID。可选。 | 最少获取数量。可选。 |
 
-Among:
-* Route ID is a string representing the route distribution of this transaction, which can be obtained through the API ; 
+其中：
+* Route ID 是一个代表这笔交易的路线分布的字符串，可以通过接口获取；
+  
+  不填或者填0的话，MixSwap 会在收到转账后自动计算当前最优交易分布；
 
-  If you do not fill in or fill in 0, MixSwap will automatically calculate the current optimal transaction distribution after receiving the transfer;
+  有效期 15 分钟。收到转账时如果已经失效，会自动退币。
 
-   The validity period is 15 minutes.  If the transfer has expired when the transfer is received, the currency will be refunded automatically.
+* 最小获取数量 是允许成交的最小所得数量；
 
-* The minimum receive amount is the minimum receive amount allowed to be traded;
+  如果成交结果少于该数量，会交易失败自动退币；
 
-   If the transaction result is less than this amount, the transaction will fail and the coins will be refunded automatically;
+  不填的话，会以千分之二的最大滑点发起交易。如果存在交易失败，会将退币会重新计算交易分布再发起交易，直至将支付的币全部交易完。
 
-   If you leave it blank, the transaction will be initiated at the maximum slippage of 0.2%.  If there is a transaction failure, the currency will be refunded, the transaction distribution will be recalculated, and the transaction will be initiated again, until all the paid coins have been traded.
+* **初次接入时，建议小额测试。**
 
-* **When connecting for the first time, a small test is recommended.**
+  **目前对于不符合规范（不能正确解码、未用`|`分隔、ACTION 不正确等）的转账不会自动退币。**
 
-   **Currently, transfers that do not meet the specifications (cannot be decoded correctly, unused | separated, ACTION is incorrect, etc.) will not be automatically refunded.**
 
-Examples of exchanging XIN with aggregate transaction:
+以聚合交易兑换 XIN 举例：
+> 已经通过接口已经拿到了 RouteID `36841c0e-ebd2-41e8-b275-907e04b05419` 希望至少获得 1.2345 个 XIN：
 
-> I have already obtained RouteID `36841c0e-ebd2-41e8-b275-907e04b05419` through the API . I hope to get at least 1.2345 XINs:  
+对 `0|c94ac88f-4671-3976-b60a-09064f1811e8|36841c0e-ebd2-41e8-b275-907e04b05419|1.2345` 进行 BASE64 得到 `MHxjOTRhYzg4Zi00NjcxLTM5NzYtYjYwYS0wOTA2NGYxODExZTh8MzY4NDFjMGUtZWJkMi00MWU4LWIyNzUtOTA3ZTA0YjA1NDE5fDEuMjM0NQ==`
 
-Encode `0|c94ac88f-4671-3976-b60a-09064f1811e8|36841c0e-ebd2-41e8-b275-907e04b05419|1.2345` in BASE64:
-`MHxjOTRhYzg4Zi00NjcxLTM5NzYtYjYwYS0wOTA2NGYxODExZTh8MzY4NDFjMGUtZWJkMi00MWU4LWIyNzUtOTA3ZTA0YjA1NDE5fDEuMjM0NQ==`
+> 希望持续交易直至成功：
 
-> Hope to continue trading until success:  
+对 `0|c94ac88f-4671-3976-b60a-09064f1811e8` 进行 BASE64 得到 `MHxjOTRhYzg4Zi00NjcxLTM5NzYtYjYwYS0wOTA2NGYxODExZTg=`
 
-Encode `0|c94ac88f-4671-3976-b60a-09064f1811e8` in BASE64:
-`MHxjOTRhYzg4Zi00NjcxLTM5NzYtYjYwYS0wOTA2NGYxODExZTg=`
 
-### Server transfer Memo specification
+### 服务器转账 Memo 规范
+每个字段会以 `|` 隔开，并以 BASE64 编码：
 
- Each field will be separated by `| `and encoded in BASE64:
 RESULT|TRACE|SOURCE|TYPE
 
-| field | RESULT | TRACE | SOURCE | TYPE |
+| 字段 | RESULT | TRACE | SOURCE | TYPE |
 | ---- | ---- | ---- | ---- | ---- |
-| Parameter verification failed to refund | 1 | Trace ID from transaction | SN (SNapshot) | RF (RFund) |
-| Aggregate trading | success 0 / failure 1 | Trace ID from transaction | AT (Aggregate Trade) | Success RL (ReLease) |
+| 参数校验失败退币 | 1 | 用户支付的Trace ID | SN (SNapshot) | RF (RFund) |
+| 聚合交易 | 成功 0 / 失败 1 | 用户支付的Trace ID | AT (Aggregate Trade) | 成功 RL (ReLease) | 失败 RF (RFund)
+
 
 ## API
 
-Version V1
+版本 V1
 
 EndPoint: https://mixswap.exchange/api/v1
 
-### Calculate the distribution of trading routes
-
+### 计算交易路线分布
 **/trade/routes**
 
-Request parameters：
-
+请求参数：
 * payAssetUuid `string`
 
-   UUID of the payment asset
-
+  支付资产的 UUID
 * receiveAssetUuid `string`
 
-   Receive asset uuid
-
+  所得资产uuid
 * payAmount `string`
 
-  Payment amount
+  支付的数量
 
 
 
-Response ：
+响应：
 ```json
 {
     "code": 0,
@@ -189,15 +188,15 @@ Response ：
 ```
 
 
-### Check order details
+### 查询订单详情
 **/order/{TRACE_ID}**
 
-Request parameters ： 
+请求参数： 
 * TRACE_ID (Path)
 
-  Trace ID when the user initiates a transaction transfer
+  用户发起交易转账时的 Trace ID
 
-Response ：
+响应：
 ```json
 {
     "code": 0,
@@ -261,12 +260,12 @@ Response ：
 ```
 
 
-### Get a list of supported assets
+### 获取支持的资产列表
 **/assets**
 
-Request parameters : None 
+请求参数： 无
 
-Response ：
+响应：
 ```json
 {
     "data": [
@@ -292,12 +291,12 @@ Response ：
 ```
 
 
-### Get supported exchanges
+### 获取支持的交易所
 **/exchanges**
 
-Request parameters : None 
+请求参数： 无
 
-Response ：
+响应：
 ```json
 {
     "data": [
