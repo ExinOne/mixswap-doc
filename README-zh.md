@@ -61,7 +61,7 @@ RESULT|TRACE|SOURCE|TYPE
 
 版本 V1
 
-EndPoint: https://mixswap.exchange/api/v1
+EndPoint: https://api.mixswap.exchange/api/v1
 
 ### 计算交易路线分布
 **/trade/routes**
@@ -305,12 +305,12 @@ EndPoint: https://mixswap.exchange/api/v1
         {
             "symbol": "exinswap",
             "name": "ExinSwap",
-            "iconUrl": "https://mixswap.exchange/img/exinswap.png"
+            "iconUrl": "https://api.mixswap.exchange/img/exinswap.png"
         },
         {
             "symbol": "foxswap",
             "name": "4swap",
-            "iconUrl": "https://mixswap.exchange/img/4swap.png"
+            "iconUrl": "https://api.mixswap.exchange/img/4swap.png"
         }
     ],
     "code": 0,
